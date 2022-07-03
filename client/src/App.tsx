@@ -1,4 +1,7 @@
-import React from "react";
+import React,{useEffect} from "react";
+import axios from "axios";
+import { Navbar } from "./components";
+import { LoginPage } from "./pages";
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,10 +10,16 @@ import {
 } from "react-router-dom";
 
 export default function App() {
+  useEffect(()=>{
+    axios.get('http://127.0.0.1:8000/api').then((data)=>{
+      console.log(data);
+    })
+  },[])
   return (
     <Router>
+    <Navbar/>
       <div>
-        <nav>
+        {/* <nav>
           <ul>
             <li>
               <Link to="/">Home</Link>
@@ -22,7 +31,7 @@ export default function App() {
               <Link to="/users">Users</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -30,6 +39,7 @@ export default function App() {
           <Route path="/about" element={<About/>}/>
           <Route path="/users" element={<Users/>}/>
           <Route path="/" element={<Home/>}/>
+          <Route path='/login' element={<LoginPage/>}/>
         </Routes>
       </div>
     </Router>

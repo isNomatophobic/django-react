@@ -1,7 +1,8 @@
 from .models import Room
+
 from rest_framework import generics,status
 from .serializers import RoomSerializer, CreateRoomSerializer
-
+from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -37,4 +38,15 @@ class CreateRoomView(APIView):
                 return Response(RoomSerializer(room).data,status=status.HTTP_201_CREATED)
         return Response({'Bad Request':'Invalid data...'},status=status.HTTP_400_BAD_REQUEST)
 
+class LoginView(generics.ListAPIView):
+    def post(self,request,format=None):
+        data = request.data
+        username = data['username']
+        email = data['email']
+        password = data['password']
+        print(email)
+        user = get_user_model().objects.create_user(username, email, password)
+        if user:
+            return Response({{'User created':f'username:${username}'}},status=status.HTTP_201_CREATED)
 
+    
